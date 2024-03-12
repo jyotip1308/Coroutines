@@ -16,9 +16,12 @@ import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.isActive
+import kotlinx.coroutines.job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
+import kotlinx.coroutines.withTimeout
 
 class MainActivity : ComponentActivity() {
     @OptIn(DelicateCoroutinesApi::class)
@@ -92,7 +95,7 @@ class MainActivity : ComponentActivity() {
 
 
         //Run Blocking
-        Log.d("Main Activity", "Before runBlocking")
+/*        Log.d("Main Activity", "Before runBlocking")
 
         runBlocking {
             launch(Dispatchers.IO){
@@ -109,8 +112,61 @@ class MainActivity : ComponentActivity() {
             Log.d("Main Activity", "End of runBlocking")
         }
 
-        Log.d("Main Activity", "After runBlocking")
+        Log.d("Main Activity", "After runBlocking")*/
 
+
+        //Job, Waiting, Cancellation
+
+        val job = GlobalScope.launch (Dispatchers.Default){
+//            repeat(5){
+//                Log.d("Main Activity", "Coroutine is still working")
+//                delay(1000L)
+//            }
+            Log.d("Main Activity", "Starting Calculation")
+
+
+            withTimeout(500L){
+                for (i in 30..40){
+                if (isActive){
+                    Log.d("Main Activity", "Result is = $i : ${fib(i)}")
+                }
+            }
+        }
+
+
+
+//            for (i in 30..40){
+//                    Log.d("Main Activity", "Result is = $i : ${fib(i)}")
+//
+//            }
+
+
+
+//            for (i in 30..40){
+//                if (isActive){
+//                    Log.d("Main Activity", "Result is = $i : ${fib(i)}")
+//
+//                }
+//            }
+
+            Log.d("Main Activity", "Ending Calculation")
+
+
+        }
+
+//        runBlocking {
+//            delay(1000L)
+////            job.join()
+//            job.cancel()
+//            Log.d("Main Activity", "Canceled Job")
+//        }
+
+    }
+
+    fun fib(n: Int) : Long{
+        return if (n ==0) 0
+        else if (n==1) 1
+        else fib(n-1) + fib(n-2)
     }
 
 /*    suspend fun doNetworkCall() : String{
