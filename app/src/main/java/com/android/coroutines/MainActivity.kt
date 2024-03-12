@@ -17,6 +17,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 
 class MainActivity : ComponentActivity() {
@@ -76,22 +77,46 @@ class MainActivity : ComponentActivity() {
 
         }*/
 
-        GlobalScope.launch ( Dispatchers.IO ){
+     /*   GlobalScope.launch ( Dispatchers.IO ){
 
             Log.d("Main Activity" , "Starting coroutine from thread ${Thread.currentThread().name}")
 
             val network = doNetworkCall()
             withContext(Dispatchers.Main){
+                
                 Log.d("Main Activity" , "New thread ${Thread.currentThread().name}")
 
             }
+        }*/
+
+
+
+        //Run Blocking
+        Log.d("Main Activity", "Before runBlocking")
+
+        runBlocking {
+            launch(Dispatchers.IO){
+//                delay(8000L)
+                Log.d("Main Activity", "Finished coroutine 1")
+            }
+            launch(Dispatchers.IO){
+//                delay(8000L)
+                Log.d("Main Activity", "Finished coroutine 2")
+            }
+
+            Log.d("Main Activity", "Start of runBlocking")
+            delay(11000L)
+            Log.d("Main Activity", "End of runBlocking")
         }
+
+        Log.d("Main Activity", "After runBlocking")
+
     }
 
-    suspend fun doNetworkCall() : String{
+/*    suspend fun doNetworkCall() : String{
         delay(3000L)
         return "Network Call"
-    }
+    }*/
 
 //    suspend fun doNetworkCall2() : String{
 //        delay(3000L)
